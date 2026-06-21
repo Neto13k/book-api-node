@@ -1,0 +1,20 @@
+{
+  "name": "book-api-node",
+  "version": "1.0.0",
+  "description": "REST API for library management built with Node.js, Express and PostgreSQL. Registers books via ISBN using Google Books API with full CRUD support.",
+  "homepage": "https://github.com/Neto13k/book-api-node#readme",
+  "bugs": {
+    "url": "https://github.com/Neto13k/book-api-node/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neto13k/book-api-node.git"
+  },
+  "license": "MIT",
+  "author": "José Hermes",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
