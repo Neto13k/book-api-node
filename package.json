@@ -13,8 +13,9 @@
   "license": "MIT",
   "author": "José Hermes",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
+    "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
