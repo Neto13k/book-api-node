@@ -42,4 +42,15 @@ async function searchBookByISBN(isbn) {
     }
 }
 
-module.exports = { fetchBookByISBN, searchBookByISBN };
+async function getAllBooks() {
+    try {
+        const result = await pool.query("SELECT * FROM books ORDER BY title ASC");
+        return result.rows;
+    } catch (error) {
+        console.error("Error fetching all books from database:", error);
+        throw error;
+    }
+}
+
+
+module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks,};
