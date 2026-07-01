@@ -52,5 +52,14 @@ async function getAllBooks() {
     }
 }
 
+async function getBookById(bookId) {
+    try {
+        const result = await pool.query("SELECT * FROM books WHERE id = $1", [bookId]);
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error fetching book by ID from database:", error);
+        throw error;
+    }
+}
 
-module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks,};
+module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks, getBookById };
