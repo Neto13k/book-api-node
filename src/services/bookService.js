@@ -62,4 +62,14 @@ async function getBookById(bookId) {
     }
 }
 
-module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks, getBookById };
+async function updateBookStatus(bookId, status) {
+    try {
+        const result = await pool.query("UPDATE books SET status = $1 WHERE id = $2 RETURNING *", [status, bookId]);
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error updating book status:", error);
+        throw error;
+    }
+}
+
+module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks, getBookById, updateBookStatus };
