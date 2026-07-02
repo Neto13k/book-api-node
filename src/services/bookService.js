@@ -72,4 +72,16 @@ async function updateBookStatus(bookId, status) {
     }
 }
 
-module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks, getBookById, updateBookStatus };
+async function deleteBook (bookId) {
+    try {
+        const result = await pool.query("DELETE FROM books WHERE id = $1 RETURNING *", [bookId]);
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error deleting book:", error);
+        throw error;
+    }
+}
+
+
+
+module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks, getBookById, updateBookStatus, deleteBook, addBook };
