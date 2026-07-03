@@ -27,9 +27,7 @@ async function searchBookByISBN(isbn) {
             title: bookData.title,
             authors: bookData.authors,
             publisher: bookData.publisher,
-            publicDate: bookData.publishedDate,
-            description: bookData.description,
-            pageCount: bookData.pageCount,
+            publishedDate: bookData.publishedDate,
             coverUrl: bookData.imageLinks?.thumbnail,
         };
 
@@ -93,10 +91,14 @@ async function createBook(isbn) {
         // Search book data from Google Books API
         const bookData = await searchBookByISBN(isbn);
 
-        // Insert book into database
+        // Map authors array to single author string (DB column is `author`) and map published date
+        const author = Array.isArray(bookData.authors) ? bookData.authors.join(', ') : bookData.authors || null
+        const publishedDate = bookData.publishedDate || null
+
+        // Insert book into database — ajustado para colunas existentes no schema
         const result = await pool.query(
-            "INSERT INTO books (isbn, title, authors, publisher, public_date, description, page_count, cover_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
-            [isbn, bookData.title, bookData.authors, bookData.publisher, bookData.publicDate, bookData.description, bookData.pageCount, bookData.coverUrl]
+            "INSERT INTO books (isbn, title, author, publisher, published_date, cover_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+            [isbn, bookData.title, author, bookData.publisher, publishedDate, bookData.coverUrl]
         );
         return result.rows[0];
     } catch (error) {
