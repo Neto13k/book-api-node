@@ -82,6 +82,30 @@ async function deleteBook (bookId) {
     }
 }
 
+async function createBook(isbn) {
+    try {
+        // Check if book already exists in database
+        const existingBook = await fetchBookByISBN(isbn);
+        if (existingBook) {
+            throw new Error(`Book with ISBN ${isbn} already exists in database`);
+        }
+
+        // Search book data from Google Books API
+        const bookData = await searchBookByISBN(isbn);
+
+        // Insert book into database
+        const result = await pool.query(
+            "INSERT INTO books (isbn, title, authors, publisher, public_date, description, page_count, cover_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+            [isbn, bookData.title, bookData.authors, bookData.publisher, bookData.publicDate, bookData.description, bookData.pageCount, bookData.coverUrl]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error creating book:", error);
+        throw error;
+    }
+}
 
 
-module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks, getBookById, updateBookStatus, deleteBook, addBook };
+
+
+module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks, getBookById, updateBookStatus, deleteBook, createBook };
