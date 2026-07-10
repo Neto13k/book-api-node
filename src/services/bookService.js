@@ -110,4 +110,4 @@ async function createBook(isbn) {
 
 
 
-module.exports = { fetchBookByISBN, searchBookByISBN, getAllBooks, getBookById, updateBookStatus, deleteBook, createBook };
+module.exports = { getAllBooks, getBookById, updateBookStatus, deleteBook, createBook };
