@@ -31,9 +31,12 @@ const getBookById = async (req, res) => {
   const { id } = req.params;
   try {
     const book = await bookService.getBookById(id);
-    res.status(200).json(book);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    res.status(200).json({ message: 'Book loaded successfully', book });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(404).json({ message: 'Book not found', error: error.message });
   }
 };
 
