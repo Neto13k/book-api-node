@@ -17,9 +17,13 @@ const createBook = async (req, res) => {
 const getAllBooks = async (req, res) => {
   try {
     const books = await bookService.getAllBooks();
-    res.status(200).json(books);
+    if (!books || books.length === 0) {
+      return res.status(200).json({ message: 'No books found', books: [] });
+    }
+
+    res.status(200).json({ message: 'Books loaded successfully', books });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Books not loaded', error: error.message });
   }
 };
 
