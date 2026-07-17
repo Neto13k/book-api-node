@@ -4,9 +4,13 @@ const createBook = async (req, res) => {
   const { isbn } = req.body;
   try {
     const book = await bookService.createBook(isbn);
-    res.status(201).json(book);
+    if (!book) {
+      return res.status(400).json({ message: 'Book not created' });
+    }
+
+    res.status(201).json({ message: 'Book created successfully', book });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: 'Book not created', error: error.message });
   }
 };
 
