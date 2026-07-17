@@ -45,9 +45,12 @@ const updateBookStatus = async (req, res) => {
   const { status } = req.body;
   try {
     const book = await bookService.updateBookStatus(id, status);
-    res.status(200).json(book);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    res.status(200).json({ message: 'Book status updated successfully', book });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: 'Book status not updated', error: error.message });
   }
 };
 
